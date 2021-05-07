@@ -1,0 +1,10 @@
+*.log
+**/__pycache__/*.pyc
+!example.log
+.env
+.xml
+.iml
+.idea/
+
+# Jupyter NB Checkpoints
+.ipynb_checkpoints/
