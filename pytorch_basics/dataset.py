@@ -26,11 +26,6 @@ class toy_set(Dataset):
         return self.len
 
 
-# Creating an instance of a data_set object from toy_set sub class
-data_set = toy_set()
-print("data set", data_set[0])
-
-
 def loop_toy_set(num=5):
     for i in range(num):
         dt = toy_set()
@@ -55,16 +50,6 @@ class add_multiply(object):
         return sample
 
 
-a_m = add_multiply(5, 12)
-
-print("a_m", a_m)
-
-dt_ = toy_set(transform=a_m)
-
-print("without transformation: ", data_set[0])
-print("with transformation : ", dt_[3])
-
-
 class multi(object):
     def __init__(self, x=2, y=2):
         self.x = x
@@ -79,12 +64,26 @@ class multi(object):
         return mul_sample
 
 
+# Creating an instance of a data_set object from toy_set subclass
+# Its an object instance without transformation
+data_set = toy_set()
+
+
+#  Creating the object with transformation - Add 5 and Multiply by 12
+a_m = add_multiply(5, 12)
+dt_ = toy_set(transform=a_m)
+
+
+#  Creating the object with transformation - Multiply by 4 and 3
 mul = multi(4, 3)
 dt1_ = toy_set(transform=mul)
 
-print("with add and mul transformation : ", dt_[3])
-print("with only mul transformation : ", dt1_[3])
 
+print("Without transformation: ", data_set[0])
+print("With applying add_multiply transformation : ", dt_[0])
+print("With applying mul transformation : ", dt1_[3])
+
+# Logic to compose and apply series of transformations
 series_trans = transforms.Compose([add_multiply(), multi()])
 
-print("After 1st and 2nd transform: ", series_trans(data_set[0]))
+print("After 1st and 2nd transformation : ", series_trans(data_set[0]))
