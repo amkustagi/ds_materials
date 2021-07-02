@@ -26,14 +26,17 @@ class toy_set(Dataset):
         return self.len
 
 
-def loop_toy_set(num=5):
-    for i in range(num):
+# Use loop to print out first N elements in dataset
+def loop_toy_set(N=5):
+    for i in range(N):
         dt = toy_set()
         x, y = dt[i]
         print("index: ", i, "x value: :", x, "y value : ", y)
 
 
-loop_toy_set()
+print("Input N value to print N no of elements in the toy_dataset")
+N = int(input())
+loop_toy_set(N)
 
 
 class add_multiply(object):
@@ -51,15 +54,14 @@ class add_multiply(object):
 
 
 class multi(object):
-    def __init__(self, x=2, y=2):
-        self.x = x
-        self.y = y
+    def __init__(self, mul_val=200):
+        self.mul_val = mul_val
 
     def __call__(self, sam):
         var1 = sam[0]
         var2 = sam[1]
-        var1 = var1 * self.x
-        var2 = var2 * self.y
+        var1 = var1 * self.mul_val
+        var2 = var2 * self.mul_val
         mul_sample = var1, var2
         return mul_sample
 
@@ -68,22 +70,29 @@ class multi(object):
 # Its an object instance without transformation
 data_set = toy_set()
 
-
 #  Creating the object with transformation - Add 5 and Multiply by 12
-a_m = add_multiply(5, 12)
-dt_ = toy_set(transform=a_m)
-
+add_n_mul = add_multiply(5, 12)
+add_n_mul_transform_ = toy_set(transform=add_n_mul)
 
 #  Creating the object with transformation - Multiply by 4 and 3
-mul = multi(4, 3)
-dt1_ = toy_set(transform=mul)
-
-
-print("Without transformation: ", data_set[0])
-print("With applying add_multiply transformation : ", dt_[0])
-print("With applying mul transformation : ", dt1_[3])
+mul = multi()
+mul_transform_ = toy_set(transform=mul)
 
 # Logic to compose and apply series of transformations
-series_trans = transforms.Compose([add_multiply(), multi()])
+series_trans_ = transforms.Compose([add_multiply(), multi()])
 
-print("After 1st and 2nd transformation : ", series_trans(data_set[0]))
+print("Our toy_set object: ", data_set)
+print("Value on Index 0 - Without transformation: ", data_set[0])
+print("Our toy_set length: ", len(data_set))
+print("Value on Index 0 - With applying add_multiply transformation : ", add_n_mul_transform_[0])
+print("Value on Index 3 - With applying mul transformation : ", mul_transform_[3])
+print("Value on Index 0  After 1st and 2nd transformation : ", series_trans_(data_set[0]))
+
+try:
+    print("Enter index to access the elements from toy_set object: ")
+    index_input = int(input())
+    element_val = series_trans_(data_set[index_input])
+    print("Elements in the index {} after series of transform :{}".format(index_input, element_val))
+
+except (IndexError, TypeError, NameError):
+    print(" Error !!!")

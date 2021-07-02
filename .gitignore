@@ -5,6 +5,7 @@
 .xml
 .iml
 .idea/
-
+.DS_Store
+.gitignore.swp
 # Jupyter NB Checkpoints
 .ipynb_checkpoints/
